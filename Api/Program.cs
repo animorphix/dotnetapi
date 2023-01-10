@@ -116,6 +116,7 @@ using(var serviceScope = ((IApplicationBuilder)app).ApplicationServices.GetServi
 
 app.UseHttpsRedirection();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
