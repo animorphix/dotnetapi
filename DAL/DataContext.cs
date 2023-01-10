@@ -15,6 +15,12 @@ namespace DAL;
 
         }
 
+        //To prevent from creating multiple users with the same username
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<User>().HasIndex(f=>f.Email).IsUnique();
+        }
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) 
         => optionsBuilder.UseNpgsql(b=>b.MigrationsAssembly("Api"));
 

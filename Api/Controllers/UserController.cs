@@ -3,6 +3,7 @@ using Api.Services;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using DAL;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -24,5 +25,6 @@ public class UserController : ControllerBase
     public async Task CreateUser(CreateUserModel model) => await _userService.CreateUser(model);
 
     [HttpGet]
+    [Authorize]
     public async Task<List<UserModel>> GetUsers() => await _userService.GetUsers();
 }

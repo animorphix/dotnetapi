@@ -49,3 +49,11 @@
 /Users/an/Desktop/dotnetapi/Api/bin/Debug/net7.0/AutoMapper.Extensions.Microsoft.DependencyInjection.dll
 /Users/an/Desktop/dotnetapi/Api/bin/Debug/net7.0/Common.dll
 /Users/an/Desktop/dotnetapi/Api/bin/Debug/net7.0/Common.pdb
+/Users/an/Desktop/dotnetapi/Api/bin/Debug/net7.0/Microsoft.AspNetCore.Authentication.JwtBearer.dll
+/Users/an/Desktop/dotnetapi/Api/bin/Debug/net7.0/Microsoft.IdentityModel.Abstractions.dll
+/Users/an/Desktop/dotnetapi/Api/bin/Debug/net7.0/Microsoft.IdentityModel.JsonWebTokens.dll
+/Users/an/Desktop/dotnetapi/Api/bin/Debug/net7.0/Microsoft.IdentityModel.Logging.dll
+/Users/an/Desktop/dotnetapi/Api/bin/Debug/net7.0/Microsoft.IdentityModel.Protocols.dll
+/Users/an/Desktop/dotnetapi/Api/bin/Debug/net7.0/Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
+/Users/an/Desktop/dotnetapi/Api/bin/Debug/net7.0/Microsoft.IdentityModel.Tokens.dll
+/Users/an/Desktop/dotnetapi/Api/bin/Debug/net7.0/System.IdentityModel.Tokens.Jwt.dll
