@@ -23,6 +23,7 @@ public class UserController : ControllerBase
 
     [HttpPost]
     public async Task CreateUser(CreateUserModel model) => await _userService.CreateUser(model);
+//test
 
     [HttpGet]
     [Authorize]
