@@ -1,0 +1,12 @@
+/Users/an/Desktop/dotnetapi/DAL/bin/Debug/net7.0/DAL.deps.json
+/Users/an/Desktop/dotnetapi/DAL/bin/Debug/net7.0/DAL.dll
+/Users/an/Desktop/dotnetapi/DAL/bin/Debug/net7.0/DAL.pdb
+/Users/an/Desktop/dotnetapi/DAL/obj/Debug/net7.0/DAL.csproj.AssemblyReference.cache
+/Users/an/Desktop/dotnetapi/DAL/obj/Debug/net7.0/DAL.GeneratedMSBuildEditorConfig.editorconfig
+/Users/an/Desktop/dotnetapi/DAL/obj/Debug/net7.0/DAL.AssemblyInfoInputs.cache
+/Users/an/Desktop/dotnetapi/DAL/obj/Debug/net7.0/DAL.AssemblyInfo.cs
+/Users/an/Desktop/dotnetapi/DAL/obj/Debug/net7.0/DAL.csproj.CoreCompileInputs.cache
+/Users/an/Desktop/dotnetapi/DAL/obj/Debug/net7.0/DAL.dll
+/Users/an/Desktop/dotnetapi/DAL/obj/Debug/net7.0/refint/DAL.dll
+/Users/an/Desktop/dotnetapi/DAL/obj/Debug/net7.0/DAL.pdb
+/Users/an/Desktop/dotnetapi/DAL/obj/Debug/net7.0/ref/DAL.dll

@@ -1,0 +1,12 @@
+/Users/an/Desktop/dotnetapi/Common/bin/Debug/net7.0/Common.deps.json
+/Users/an/Desktop/dotnetapi/Common/bin/Debug/net7.0/Common.dll
+/Users/an/Desktop/dotnetapi/Common/bin/Debug/net7.0/Common.pdb
+/Users/an/Desktop/dotnetapi/Common/obj/Debug/net7.0/Common.csproj.AssemblyReference.cache
+/Users/an/Desktop/dotnetapi/Common/obj/Debug/net7.0/Common.GeneratedMSBuildEditorConfig.editorconfig
+/Users/an/Desktop/dotnetapi/Common/obj/Debug/net7.0/Common.AssemblyInfoInputs.cache
+/Users/an/Desktop/dotnetapi/Common/obj/Debug/net7.0/Common.AssemblyInfo.cs
+/Users/an/Desktop/dotnetapi/Common/obj/Debug/net7.0/Common.csproj.CoreCompileInputs.cache
+/Users/an/Desktop/dotnetapi/Common/obj/Debug/net7.0/Common.dll
+/Users/an/Desktop/dotnetapi/Common/obj/Debug/net7.0/refint/Common.dll
+/Users/an/Desktop/dotnetapi/Common/obj/Debug/net7.0/Common.pdb
+/Users/an/Desktop/dotnetapi/Common/obj/Debug/net7.0/ref/Common.dll
