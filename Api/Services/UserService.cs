@@ -14,7 +14,6 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace Api.Services;
 
-
 public class UserService
 {
     private readonly IMapper _mapper;
@@ -40,9 +39,21 @@ public class UserService
         return await _context.Users.AsNoTracking().ProjectTo<UserModel>(_mapper.ConfigurationProvider).ToListAsync();
     }
 
+    public async Task<UserModel> GetUser(Guid id)
+    {
+        var user = await _context.Users.FirstOrDefaultAsync(x=>x.Id == id);
+
+        if (user==null)
+        {
+            throw new Exception("User Not Found");
+        }
+
+        return _mapper.Map<UserModel>(user);
+    }
+
     private async Task<DAL.Entities.User> GetUserByCredentials(string login, string password) //GetUserByCredention in tutorial????
     {
-        var user = await _context.Users.FirstOrDefaultAsync(x=>x.Email == login);
+        var user = await _context.Users.FirstOrDefaultAsync(x=>x.Email.ToLower() == login.ToLower());
 
         if (user==null)
         {

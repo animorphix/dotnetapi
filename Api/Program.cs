@@ -96,9 +96,6 @@ builder.Services.AddAuthorization(o=>
 
 var app = builder.Build();
 
-
-
-
 using(var serviceScope = ((IApplicationBuilder)app).ApplicationServices.GetService<IServiceScopeFactory>()?.CreateScope())
 {
     if (serviceScope !=null)
