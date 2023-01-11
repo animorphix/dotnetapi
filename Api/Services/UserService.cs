@@ -39,15 +39,21 @@ public class UserService
         return await _context.Users.AsNoTracking().ProjectTo<UserModel>(_mapper.ConfigurationProvider).ToListAsync();
     }
 
-    public async Task<UserModel> GetUser(Guid id)
+    private async Task<DAL.Entities.User> GetUserById(Guid id)
     {
-        var user = await _context.Users.FirstOrDefaultAsync(x=>x.Id == id);
+        var user = await _context.Users.FirstOrDefaultAsync(x => x.Id == id);
 
-        if (user==null)
+        if (user == null)
         {
             throw new Exception("User Not Found");
         }
 
+        return user;
+    }
+
+    public async Task<UserModel> GetUser(Guid id)
+    {
+        var user = await GetUserById(id);
         return _mapper.Map<UserModel>(user);
     }
 

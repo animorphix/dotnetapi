@@ -10,3 +10,15 @@
 /Users/an/Desktop/dotnetapi/Common/obj/Debug/net7.0/refint/Common.dll
 /Users/an/Desktop/dotnetapi/Common/obj/Debug/net7.0/Common.pdb
 /Users/an/Desktop/dotnetapi/Common/obj/Debug/net7.0/ref/Common.dll
+C:\Users\Ian\Desktop\dna\Common\bin\Debug\net7.0\Common.deps.json
+C:\Users\Ian\Desktop\dna\Common\bin\Debug\net7.0\Common.dll
+C:\Users\Ian\Desktop\dna\Common\bin\Debug\net7.0\Common.pdb
+C:\Users\Ian\Desktop\dna\Common\obj\Debug\net7.0\Common.csproj.AssemblyReference.cache
+C:\Users\Ian\Desktop\dna\Common\obj\Debug\net7.0\Common.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Ian\Desktop\dna\Common\obj\Debug\net7.0\Common.AssemblyInfoInputs.cache
+C:\Users\Ian\Desktop\dna\Common\obj\Debug\net7.0\Common.AssemblyInfo.cs
+C:\Users\Ian\Desktop\dna\Common\obj\Debug\net7.0\Common.csproj.CoreCompileInputs.cache
+C:\Users\Ian\Desktop\dna\Common\obj\Debug\net7.0\Common.dll
+C:\Users\Ian\Desktop\dna\Common\obj\Debug\net7.0\refint\Common.dll
+C:\Users\Ian\Desktop\dna\Common\obj\Debug\net7.0\Common.pdb
+C:\Users\Ian\Desktop\dna\Common\obj\Debug\net7.0\ref\Common.dll

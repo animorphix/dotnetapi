@@ -10,3 +10,15 @@
 /Users/an/Desktop/dotnetapi/DAL/obj/Debug/net7.0/refint/DAL.dll
 /Users/an/Desktop/dotnetapi/DAL/obj/Debug/net7.0/DAL.pdb
 /Users/an/Desktop/dotnetapi/DAL/obj/Debug/net7.0/ref/DAL.dll
+C:\Users\Ian\Desktop\dna\DAL\bin\Debug\net7.0\DAL.deps.json
+C:\Users\Ian\Desktop\dna\DAL\bin\Debug\net7.0\DAL.dll
+C:\Users\Ian\Desktop\dna\DAL\bin\Debug\net7.0\DAL.pdb
+C:\Users\Ian\Desktop\dna\DAL\obj\Debug\net7.0\DAL.csproj.AssemblyReference.cache
+C:\Users\Ian\Desktop\dna\DAL\obj\Debug\net7.0\DAL.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Ian\Desktop\dna\DAL\obj\Debug\net7.0\DAL.AssemblyInfoInputs.cache
+C:\Users\Ian\Desktop\dna\DAL\obj\Debug\net7.0\DAL.AssemblyInfo.cs
+C:\Users\Ian\Desktop\dna\DAL\obj\Debug\net7.0\DAL.csproj.CoreCompileInputs.cache
+C:\Users\Ian\Desktop\dna\DAL\obj\Debug\net7.0\DAL.dll
+C:\Users\Ian\Desktop\dna\DAL\obj\Debug\net7.0\refint\DAL.dll
+C:\Users\Ian\Desktop\dna\DAL\obj\Debug\net7.0\DAL.pdb
+C:\Users\Ian\Desktop\dna\DAL\obj\Debug\net7.0\ref\DAL.dll

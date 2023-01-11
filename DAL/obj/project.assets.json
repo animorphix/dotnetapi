@@ -4948,24 +4948,26 @@
     ]
   },
   "packageFolders": {
-    "/Users/an/.nuget/packages/": {}
+    "C:\\Users\\Ian\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/Users/an/Desktop/dotnetapi/DAL/DAL.csproj",
+      "projectUniqueName": "C:\\Users\\Ian\\Desktop\\dna\\DAL\\DAL.csproj",
       "projectName": "DAL",
-      "projectPath": "/Users/an/Desktop/dotnetapi/DAL/DAL.csproj",
-      "packagesPath": "/Users/an/.nuget/packages/",
-      "outputPath": "/Users/an/Desktop/dotnetapi/DAL/obj/",
+      "projectPath": "C:\\Users\\Ian\\Desktop\\dna\\DAL\\DAL.csproj",
+      "packagesPath": "C:\\Users\\Ian\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\Ian\\Desktop\\dna\\DAL\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "/Users/an/.nuget/NuGet/NuGet.Config"
+        "C:\\Users\\Ian\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
         "net7.0"
       ],
       "sources": {
+        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
@@ -5013,7 +5015,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/7.0.101/RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.101\\RuntimeIdentifierGraph.json"
       }
     }
   }
