@@ -74,14 +74,12 @@ public class UserService
         return user;
     }
 
-    public async Task<TokenModel> GetToken (string login, string password)
+    private TokenModel GenerateTokens(DAL.Entities.User user)
     {
-        var user = await GetUserByCredentials(login,password);
 
         var claims = new Claim[] 
         {
-            //new Claim(ClaimsIdentity.DefaultNameClaimType, user.Email),
-            new Claim("displayName", user.Name),
+            new Claim(ClaimsIdentity.DefaultNameClaimType, user.Name),
             new Claim("id", user.Id.ToString()),
         };
 
@@ -89,14 +87,70 @@ public class UserService
             issuer: _config.Issuer,
             audience: _config.Audience,
             notBefore: DateTime.Now,
-            claims: claims,
+            claims: new Claim[] 
+            {
+            new Claim(ClaimsIdentity.DefaultNameClaimType, user.Name),
+            new Claim("id", user.Id.ToString()),
+            },
             expires: DateTime.Now.AddMinutes(_config.LifeTime),
             signingCredentials: new SigningCredentials(_config.SymmetricSecurityKey(), SecurityAlgorithms.HmacSha256)
         );
-
         var encodedJwt = new JwtSecurityTokenHandler().WriteToken(jwt);
 
-        return new TokenModel(encodedJwt);
+        var refresh = new JwtSecurityToken(
+            notBefore: DateTime.Now,
+            claims: new Claim[] 
+            {
+            new Claim("id", user.Id.ToString()),
+            },
+            expires: DateTime.Now.AddHours(_config.LifeTime),
+            signingCredentials: new SigningCredentials(_config.SymmetricSecurityKey(), SecurityAlgorithms.HmacSha256)
+        );
+        var encodedRefresh = new JwtSecurityTokenHandler().WriteToken(refresh);
+
+        return new TokenModel(encodedJwt, encodedRefresh);
+    }
+
+    public async Task<TokenModel> GetToken (string login, string password)
+    {
+        var user = await GetUserByCredentials(login,password);
+
+        return GenerateTokens(user);
+    }
+
+    public async Task<TokenModel> GetTokenByRefreshToken(string refreshToken)
+    {
+        var validParams = new TokenValidationParameters
+        {
+            ValidateAudience = false,
+            ValidateIssuer = false,
+            ValidateIssuerSigningKey = true,
+            ValidateLifetime = true,
+            IssuerSigningKey = _config.SymmetricSecurityKey()
+        };
+
+        //?????????? What is principal
+        var principal = new JwtSecurityTokenHandler().ValidateToken(refreshToken, validParams, out var securityToken);
+         
+        ///????????
+        if (securityToken is not JwtSecurityToken jwtToken 
+        || !jwtToken.Header.Alg.Equals(SecurityAlgorithms.HmacSha256, StringComparison.InvariantCultureIgnoreCase))
+        {
+            throw new SecurityTokenException("Invalid Token");
+        }
+
+        if (principal.Claims.FirstOrDefault(x=>x.Type=="id")?.Value is String userIdString 
+        && Guid.TryParse(userIdString, out var userId))
+        {
+            var user = await GetUserById(userId);
+
+            return GenerateTokens(user);
+        }
+
+        else
+        {
+            throw new SecurityTokenException("Invalid Token");
+        }
     }
 }
 
