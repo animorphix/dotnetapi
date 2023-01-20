@@ -55,7 +55,8 @@ builder.Services.AddSwaggerGen(c =>
 builder.Services.AddDbContext<DAL.DataContext>(options =>
 {
     options.UseNpgsql(builder.Configuration.GetConnectionString("PostgreSql"), sql => { });
-});
+}, contextLifetime: ServiceLifetime.Scoped);
+
 
 
 /*????????????????????????????*/
