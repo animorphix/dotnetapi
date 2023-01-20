@@ -14,11 +14,12 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace Api.Services;
 
-public class UserService
+public class UserService: IDisposable
 {
     private readonly IMapper _mapper;
     private readonly DAL.DataContext _context;
     private readonly AuthConfig _config;
+
 
     public UserService (IMapper mapper, DataContext context, IOptions<AuthConfig> config)
     {
@@ -27,11 +28,27 @@ public class UserService
         _config = config.Value;
     }
 
-    public async Task CreateUser(CreateUserModel model)
+    public async Task<bool> CheckUserExists(string email)
+    {
+        return await _context.Users.AnyAsync(x=>x.Email.ToLower() == email.ToLower());
+    }
+
+    public async Task Delete (Guid id)
+    {
+        var dbUser = await _context.Users.FirstOrDefaultAsync(x=>x.Id == id);
+        if (dbUser != null)
+        {
+            _context.Users.Remove(dbUser);
+            await _context.SaveChangesAsync();
+        }
+    }
+
+    public async Task<Guid> CreateUser(CreateUserModel model)
     {
         var dbUser = _mapper.Map<DAL.Entities.User>(model);
-        await _context.Users.AddAsync(dbUser);
+        var t = await _context.Users.AddAsync(dbUser);
         await _context.SaveChangesAsync();
+        return t.Entity.Id;
     }
 
     public async Task<List<UserModel>> GetUsers()
@@ -151,6 +168,11 @@ public class UserService
         {
             throw new SecurityTokenException("Invalid Token");
         }
+    }
+
+    public void Dispose()
+    {
+        _context.Dispose();
     }
 }
 
