@@ -40,7 +40,7 @@ public class UserController : ControllerBase
     [Authorize]
     public async Task<UserModel> GetCurrentUser() 
     {
-        var userIdString = User.Claims.FirstOrDefault(x=>x.Type =="id")?.Value;
+        var userIdString = User.Claims.FirstOrDefault(x=>x.Type =="userId")?.Value;
 
         if (Guid.TryParse(userIdString, out var userId))
         {

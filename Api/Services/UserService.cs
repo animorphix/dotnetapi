@@ -7,6 +7,7 @@ using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using Common;
 using DAL;
+using DAL.Entities;
 using Microsoft.AspNetCore.Server.IIS.Core;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
@@ -19,7 +20,6 @@ public class UserService: IDisposable
     private readonly IMapper _mapper;
     private readonly DAL.DataContext _context;
     private readonly AuthConfig _config;
-
 
     public UserService (IMapper mapper, DataContext context, IOptions<AuthConfig> config)
     {
@@ -91,23 +91,27 @@ public class UserService: IDisposable
         return user;
     }
 
-    private TokenModel GenerateTokens(DAL.Entities.User user)
+    private TokenModel GenerateTokens(DAL.Entities.UserSession session)
     {
 
         var claims = new Claim[] 
         {
-            new Claim(ClaimsIdentity.DefaultNameClaimType, user.Name),
-            new Claim("id", user.Id.ToString()),
+            new Claim(ClaimsIdentity.DefaultNameClaimType, session.User.Name),
+            new Claim("sessionId", session.Id.ToString()),
+            new Claim("id", session.User.Id.ToString()),
         };
-
+        if (session.User == null)
+        {
+            throw new Exception("session.user==null");
+        }
         var jwt = new JwtSecurityToken(
             issuer: _config.Issuer,
             audience: _config.Audience,
             notBefore: DateTime.Now,
             claims: new Claim[] 
             {
-            new Claim(ClaimsIdentity.DefaultNameClaimType, user.Name),
-            new Claim("id", user.Id.ToString()),
+            new Claim(ClaimsIdentity.DefaultNameClaimType, session.User.Name),
+            new Claim("userId", session.User.Id.ToString()),
             },
             expires: DateTime.Now.AddMinutes(_config.LifeTime),
             signingCredentials: new SigningCredentials(_config.SymmetricSecurityKey(), SecurityAlgorithms.HmacSha256)
@@ -118,7 +122,7 @@ public class UserService: IDisposable
             notBefore: DateTime.Now,
             claims: new Claim[] 
             {
-            new Claim("id", user.Id.ToString()),
+            new Claim("refreshToken", session.RefreshToken.ToString()),
             },
             expires: DateTime.Now.AddHours(_config.LifeTime),
             signingCredentials: new SigningCredentials(_config.SymmetricSecurityKey(), SecurityAlgorithms.HmacSha256)
@@ -131,8 +135,45 @@ public class UserService: IDisposable
     public async Task<TokenModel> GetToken (string login, string password)
     {
         var user = await GetUserByCredentials(login,password);
+        var session = await  _context.UserSessions.AddAsync(new DAL.Entities.UserSession 
+        {
+            User = user, 
+            RefreshToken = Guid.NewGuid(), 
+            Created = DateTime.UtcNow, 
+            Id = Guid.NewGuid(),
+        });
+        await _context.SaveChangesAsync();
+        return GenerateTokens(session.Entity);
+    }
 
-        return GenerateTokens(user);
+    public async Task<UserSession> GetSessionById (Guid userId)
+    {
+        var session = await _context.UserSessions.FirstOrDefaultAsync(x => x.Id == userId);
+        
+        if(session == null)
+        {
+            throw new Exception("Session not found");
+        }
+        else
+        {
+            return session;
+        }
+        
+    }
+
+        private async Task<UserSession> GetSessionByrefreshToken (Guid id)
+    {
+        var session = await _context.UserSessions.Include(x=>x.User).FirstOrDefaultAsync(x => x.RefreshToken == id);
+        
+        if(session == null)
+        {
+            throw new Exception("Session not found");
+        }
+        else
+        {
+            return session;
+        }
+        
     }
 
     public async Task<TokenModel> GetTokenByRefreshToken(string refreshToken)
@@ -156,12 +197,18 @@ public class UserService: IDisposable
             throw new SecurityTokenException("Invalid Token");
         }
 
-        if (principal.Claims.FirstOrDefault(x=>x.Type=="id")?.Value is String userIdString 
-        && Guid.TryParse(userIdString, out var userId))
+        if (principal.Claims.FirstOrDefault(x=>x.Type=="refreshToken")?.Value is String refreshIdString
+            && Guid.TryParse(refreshIdString, out var refreshId))
         {
-            var user = await GetUserById(userId);
-
-            return GenerateTokens(user);
+            var session = await GetSessionByrefreshToken(refreshId);
+            if(!session.IsActive)
+            {
+                throw new Exception("Session not active");
+            }
+            var user = session.User;
+            session.RefreshToken = Guid.NewGuid();
+            await _context.SaveChangesAsync();
+            return GenerateTokens(session);
         }
 
         else
