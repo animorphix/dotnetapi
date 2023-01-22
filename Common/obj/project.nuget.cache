@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "hz+a0p7hEif8nzZr+u6/8Bvwgo1YVEdHBzcSLY5guVLD30D2lfSDSzUxc/yZTvVTOA1653R6T/4U58lPmzGqpQ==",
+  "dgSpecHash": "CdRZh28NZ2WwG+oFVnBWt8SoduenlE3TERwaezOx6JjuXF4SJCPfayYTZyXypjDb4KslVjKbP0fJGJijzJjcFw==",
   "success": true,
-  "projectFilePath": "C:\\Users\\Ian\\Desktop\\dna\\Common\\Common.csproj",
+  "projectFilePath": "/Users/an/Desktop/dotnetapi/Common/Common.csproj",
   "expectedPackageFiles": [],
   "logs": []
 }

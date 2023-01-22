@@ -8,5 +8,5 @@ public class User
     public string PasswordHash {get;set;} = "empty";
     public DateTimeOffset BirthDate {get;set;}
 
-
+    public virtual ICollection<UserSession>? Sessions { get; set; }
 }
