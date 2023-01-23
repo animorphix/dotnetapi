@@ -1,1 +1,6 @@
 .vscode
+# exclude everything
+Api/Attaches/*
+
+# exception to the rule
+!Api/Attaches/.gitkeep 

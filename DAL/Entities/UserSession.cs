@@ -9,14 +9,4 @@ public class UserSession
     public bool IsActive {get; set;} = true;
 
     public virtual User? User {get;set;}
-
-    // public UserSession(Guid id, Guid userId, Guid refreahToken, DateTimeOffset created, bool isActive, User user)
-    // {
-    //     Id = id;
-    //     UserId = userId;
-    //     RefreshToken = refreahToken;
-    //     Created = created;
-    //     IsActive = isActive;
-    //     User = user;
-    // }
 }
