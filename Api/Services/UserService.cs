@@ -21,7 +21,7 @@ public class UserService: IDisposable
     private readonly DAL.DataContext _context;
     private readonly AuthConfig _config;
 
-    public UserService (IMapper mapper, DataContext context, IOptions<AuthConfig> config)
+    public UserService (IMapper mapper, IOptions<AuthConfig> config, DataContext context)
     {
         _mapper = mapper;
         _context = context;
@@ -33,9 +33,28 @@ public class UserService: IDisposable
         return await _context.Users.AnyAsync(x=>x.Email.ToLower() == email.ToLower());
     }
 
+    public async Task AddAvatarToUser(Guid userId, MetaDataModel meta, string filePath)
+    {
+        var user = await _context.Users.Include(x=>x.Avatar).FirstOrDefaultAsync(x=>x.Id==userId);
+        if (user != null)
+        {
+            var avatar = new Avatar
+            { 
+                Author = user, 
+                MimeType = meta.MimeType, 
+                FilePath = filePath, 
+                Name = meta.Name, 
+                Size = meta.Size,
+            };
+            user.Avatar = avatar;
+            await _context.SaveChangesAsync();
+        }
+    }
+
     public async Task Delete (Guid id)
     {
-        var dbUser = await _context.Users.FirstOrDefaultAsync(x=>x.Id == id);
+        var dbUser = await GetUserById(id);
+
         if (dbUser != null)
         {
             _context.Users.Remove(dbUser);
@@ -93,13 +112,6 @@ public class UserService: IDisposable
 
     private TokenModel GenerateTokens(DAL.Entities.UserSession session)
     {
-
-        var claims = new Claim[] 
-        {
-            new Claim(ClaimsIdentity.DefaultNameClaimType, session.User.Name),
-            new Claim("sessionId", session.Id.ToString()),
-            new Claim("id", session.User.Id.ToString()),
-        };
         if (session.User == null)
         {
             throw new Exception("session.user==null");
@@ -112,6 +124,7 @@ public class UserService: IDisposable
             {
             new Claim(ClaimsIdentity.DefaultNameClaimType, session.User.Name),
             new Claim("userId", session.User.Id.ToString()),
+            new Claim("SessionId", session.Id.ToString())
             },
             expires: DateTime.Now.AddMinutes(_config.LifeTime),
             signingCredentials: new SigningCredentials(_config.SymmetricSecurityKey(), SecurityAlgorithms.HmacSha256)

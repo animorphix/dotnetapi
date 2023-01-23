@@ -30,7 +30,33 @@ public class UserController : ControllerBase
         }
         await _userService.CreateUser(model);
     }
-//test
+
+    [HttpPost]
+    [Authorize]
+    public async Task AddAvatarToUser(MetaDataModel model)
+    {
+        var userIdString = User.Claims.FirstOrDefault(x=>x.Type =="userId")?.Value;
+
+        if (Guid.TryParse(userIdString, out var userId))
+        {
+            var tempFi = new FileInfo(Path.Combine(Path.GetTempPath(),model.TempId.ToString()));
+
+            if (!tempFi.Exists)
+            {
+                throw new Exception("File not found");
+            }
+
+            else
+            {
+                var path = Path.Combine(Directory.GetCurrentDirectory(),"Attaches",model.TempId.ToString());
+                System.IO.File.Copy(tempFi.FullName, path, true);
+                await _userService.AddAvatarToUser(userId,model,path);
+            }
+        }
+
+        else throw new Exception("You are not authorized");
+    }
+
 
     [HttpGet]
     [Authorize]

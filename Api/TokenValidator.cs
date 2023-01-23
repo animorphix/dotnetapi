@@ -45,9 +45,7 @@ public class TokenValidatorMiddleware
 
 public static class TokenValidatiorMiddlewareExtension
 {
-    public static IApplicationBuilder UseTokenValidator(
-        this IApplicationBuilder builder
-    )
+    public static IApplicationBuilder UseTokenValidator(this IApplicationBuilder builder)
     {
         return builder.UseMiddleware<TokenValidatorMiddleware>();
     }
