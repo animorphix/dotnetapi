@@ -3,6 +3,7 @@ using Api.Services;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using DAL;
+using DAL.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -49,6 +50,11 @@ public class UserController : ControllerBase
             else
             {
                 var path = Path.Combine(Directory.GetCurrentDirectory(),"Attaches",model.TempId.ToString());
+                var destFi = new FileInfo(path);
+                if(destFi.Directory !=null && !destFi.Directory.Exists)
+                {
+                    destFi.Directory.Create();
+                }
                 System.IO.File.Copy(tempFi.FullName, path, true);
                 await _userService.AddAvatarToUser(userId,model,path);
             }
@@ -57,6 +63,27 @@ public class UserController : ControllerBase
         else throw new Exception("You are not authorized");
     }
 
+    [HttpGet]
+    public async Task<FileResult> GetAvatarById(Guid userId)
+    {
+        var attach = await _userService.GetUserAvatar(userId);
+
+        return File(System.IO.File.ReadAllBytes(attach.FilePath), attach.MimeType);
+    }
+
+    [HttpGet]
+    public async Task<FileResult> DownloadAvatar(Guid userId)
+    {
+        var attach = await _userService.GetUserAvatar(userId);
+
+        HttpContext.Response.ContentType = attach.MimeType;
+        FileContentResult result = new FileContentResult(System.IO.File.ReadAllBytes(attach.FilePath),attach.MimeType)
+        {
+            FileDownloadName = attach.Name
+        };
+
+        return result;
+    } 
 
     [HttpGet]
     [Authorize]

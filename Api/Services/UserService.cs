@@ -28,27 +28,19 @@ public class UserService: IDisposable
         _config = config.Value;
     }
 
+
+    //Manipulations with users 
+    public async Task<Guid> CreateUser(CreateUserModel model)
+    {
+        var dbUser = _mapper.Map<DAL.Entities.User>(model);
+        var t = await _context.Users.AddAsync(dbUser);
+        await _context.SaveChangesAsync();
+        return t.Entity.Id;
+    }
+
     public async Task<bool> CheckUserExists(string email)
     {
         return await _context.Users.AnyAsync(x=>x.Email.ToLower() == email.ToLower());
-    }
-
-    public async Task AddAvatarToUser(Guid userId, MetaDataModel meta, string filePath)
-    {
-        var user = await _context.Users.Include(x=>x.Avatar).FirstOrDefaultAsync(x=>x.Id==userId);
-        if (user != null)
-        {
-            var avatar = new Avatar
-            { 
-                Author = user, 
-                MimeType = meta.MimeType, 
-                FilePath = filePath, 
-                Name = meta.Name, 
-                Size = meta.Size,
-            };
-            user.Avatar = avatar;
-            await _context.SaveChangesAsync();
-        }
     }
 
     public async Task Delete (Guid id)
@@ -62,22 +54,50 @@ public class UserService: IDisposable
         }
     }
 
-    public async Task<Guid> CreateUser(CreateUserModel model)
+
+    //User Profile Image manipulation
+    public async Task AddAvatarToUser(Guid userId, MetaDataModel meta, string filePath)
     {
-        var dbUser = _mapper.Map<DAL.Entities.User>(model);
-        var t = await _context.Users.AddAsync(dbUser);
-        await _context.SaveChangesAsync();
-        return t.Entity.Id;
+        var user = await _context.Users.Include(x=>x.Avatar).FirstOrDefaultAsync(x=>x.Id==userId);
+        if (user != null)
+        {
+            var avatar = new Avatar
+            { 
+                Author = user, 
+                MimeType = meta.MimeType, 
+                FilePath = filePath, 
+                Name = meta.Name, 
+                Size = meta.Size,
+            };
+            
+            user.Avatar = avatar;
+            await _context.SaveChangesAsync();
+        }
+    }
+    
+    public async Task<AttachModel> GetUserAvatar(Guid userId)
+    {
+        var user = await GetUserById(userId);
+        var attach = _mapper.Map<AttachModel>(user.Avatar);
+        return attach;
     }
 
+
+    //Getting users
     public async Task<List<UserModel>> GetUsers()
     {
         return await _context.Users.AsNoTracking().ProjectTo<UserModel>(_mapper.ConfigurationProvider).ToListAsync();
     }
+    
+    public async Task<UserModel> GetUser(Guid id)
+    {
+        var user = await GetUserById(id);
+        return _mapper.Map<UserModel>(user);
+    }
 
     private async Task<DAL.Entities.User> GetUserById(Guid id)
     {
-        var user = await _context.Users.FirstOrDefaultAsync(x => x.Id == id);
+        var user = await _context.Users.Include(x=>x.Avatar).FirstOrDefaultAsync(x => x.Id == id);
 
         if (user == null)
         {
@@ -87,13 +107,7 @@ public class UserService: IDisposable
         return user;
     }
 
-    public async Task<UserModel> GetUser(Guid id)
-    {
-        var user = await GetUserById(id);
-        return _mapper.Map<UserModel>(user);
-    }
-
-    private async Task<DAL.Entities.User> GetUserByCredentials(string login, string password) //GetUserByCredention in tutorial????
+    private async Task<DAL.Entities.User> GetUserByCredentials(string login, string password) 
     {
         var user = await _context.Users.FirstOrDefaultAsync(x=>x.Email.ToLower() == login.ToLower());
 
@@ -110,6 +124,8 @@ public class UserService: IDisposable
         return user;
     }
 
+    
+    //Token generation and auth
     private TokenModel GenerateTokens(DAL.Entities.UserSession session)
     {
         if (session.User == null)
@@ -144,7 +160,7 @@ public class UserService: IDisposable
 
         return new TokenModel(encodedJwt, encodedRefresh);
     }
-
+    
     public async Task<TokenModel> GetToken (string login, string password)
     {
         var user = await GetUserByCredentials(login,password);
@@ -158,37 +174,7 @@ public class UserService: IDisposable
         await _context.SaveChangesAsync();
         return GenerateTokens(session.Entity);
     }
-
-    public async Task<UserSession> GetSessionById (Guid userId)
-    {
-        var session = await _context.UserSessions.FirstOrDefaultAsync(x => x.Id == userId);
-        
-        if(session == null)
-        {
-            throw new Exception("Session not found");
-        }
-        else
-        {
-            return session;
-        }
-        
-    }
-
-        private async Task<UserSession> GetSessionByrefreshToken (Guid id)
-    {
-        var session = await _context.UserSessions.Include(x=>x.User).FirstOrDefaultAsync(x => x.RefreshToken == id);
-        
-        if(session == null)
-        {
-            throw new Exception("Session not found");
-        }
-        else
-        {
-            return session;
-        }
-        
-    }
-
+    
     public async Task<TokenModel> GetTokenByRefreshToken(string refreshToken)
     {
         var validParams = new TokenValidationParameters
@@ -229,6 +215,40 @@ public class UserService: IDisposable
             throw new SecurityTokenException("Invalid Token");
         }
     }
+
+   
+   //Sessions management
+    public async Task<UserSession> GetSessionById (Guid userId)
+    {
+        var session = await _context.UserSessions.FirstOrDefaultAsync(x => x.Id == userId);
+        
+        if(session == null)
+        {
+            throw new Exception("Session not found");
+        }
+        else
+        {
+            return session;
+        }
+        
+    }
+
+    private async Task<UserSession> GetSessionByrefreshToken (Guid id)
+    {
+        var session = await _context.UserSessions.Include(x=>x.User).FirstOrDefaultAsync(x => x.RefreshToken == id);
+        
+        if(session == null)
+        {
+            throw new Exception("Session not found");
+        }
+        else
+        {
+            return session;
+        }
+        
+    }
+
+
 
     public void Dispose()
     {
