@@ -1,4 +1,6 @@
 using System.Data.SqlTypes;
+using System.Web.Http;
+using System.Web.Http.Cors;
 using Api;
 using Api.Configs;
 using Api.Services;
@@ -9,7 +11,6 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
-
 
 /*????????????????????????????*/
 var authSection = builder.Configuration.GetSection(AuthConfig.Position);
@@ -60,20 +61,20 @@ builder.Services.AddDbContext<DAL.DataContext>(options =>
 }, contextLifetime: ServiceLifetime.Scoped);
 
 
-
 /*????????????????????????????*/
 builder.Services.AddAutoMapper(typeof(Api.MapperProfile).Assembly);
 /*????????????????????????????*/
 
 builder.Services.AddScoped<UserService>();
+builder.Services.AddScoped<AuthService>();
+builder.Services.AddScoped<PostService>();
 
 builder.Services.AddAuthentication(o=>{
     o.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
-}).AddJwtBearer(o=>{
+    }).AddJwtBearer(o=>{
 
     //CHANGE FOR RELEASE
     o.RequireHttpsMetadata = false;
-
 
     o.TokenValidationParameters = new TokenValidationParameters
     {
@@ -86,8 +87,6 @@ builder.Services.AddAuthentication(o=>{
         IssuerSigningKey = authConfig.SymmetricSecurityKey(),
         ClockSkew = TimeSpan.Zero,
     };
-    
-    
 });
 
 builder.Services.AddAuthorization(o=>
@@ -121,7 +120,6 @@ app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
 app.UseTokenValidator();
-
 app.MapControllers();
 
 app.Run();

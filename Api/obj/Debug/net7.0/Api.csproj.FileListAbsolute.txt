@@ -116,3 +116,9 @@ C:/Users/Ian/Desktop/dna/Api/obj/Debug/net7.0/refint/Api.dll
 C:/Users/Ian/Desktop/dna/Api/obj/Debug/net7.0/Api.pdb
 C:/Users/Ian/Desktop/dna/Api/obj/Debug/net7.0/Api.genruntimeconfig.cache
 C:/Users/Ian/Desktop/dna/Api/obj/Debug/net7.0/ref/Api.dll
+/Users/an/Desktop/dotnetapi/Api/bin/Debug/net7.0/Microsoft.AspNetCore.SpaServices.Extensions.dll
+/Users/an/Desktop/dotnetapi/Api/bin/Debug/net7.0/System.Web.Cors.dll
+/Users/an/Desktop/dotnetapi/Api/bin/Debug/net7.0/System.Net.Http.Formatting.dll
+/Users/an/Desktop/dotnetapi/Api/bin/Debug/net7.0/System.Web.Http.dll
+/Users/an/Desktop/dotnetapi/Api/bin/Debug/net7.0/System.Web.Http.Cors.dll
+/Users/an/Desktop/dotnetapi/Api/bin/Debug/net7.0/Newtonsoft.Json.Bson.dll

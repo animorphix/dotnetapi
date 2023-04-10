@@ -1,3 +1,4 @@
+using System.Web.Http.Cors;
 using Api.Models;
 using Api.Services;
 using AutoMapper;
@@ -22,15 +23,15 @@ public class UserController : ControllerBase
         _userService = userService;
     }
 
-    [HttpPost]
-    public async Task CreateUser(CreateUserModel model) 
-    {
-        if (await _userService.CheckUserExists(model.Email))
-        {
-            throw new Exception ("User already exists");
-        }
-        await _userService.CreateUser(model);
-    }
+    // [HttpPost]
+    // public async Task CreateUser(CreateUserModel model) 
+    // {
+    //     if (await _userService.CheckUserExists(model.Email))
+    //     {
+    //         throw new Exception ("User already exists");
+    //     }
+    //     await _userService.CreateUser(model);
+    // }
 
     [HttpPost]
     [Authorize]
@@ -72,7 +73,7 @@ public class UserController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<FileResult> DownloadAvatar(Guid userId)
+    public async Task<FileResult> DownloadAvatarById(Guid userId)
     {
         var attach = await _userService.GetUserAvatar(userId);
 
@@ -86,8 +87,7 @@ public class UserController : ControllerBase
     } 
 
     [HttpGet]
-    [Authorize]
-    public async Task<List<UserModel>> GetUsers() => await _userService.GetUsers();
+    public async Task<IEnumerable<UserAvatarModel>> GetUsers() => await _userService.GetUsers();
 
     [HttpGet]
     [Authorize]
